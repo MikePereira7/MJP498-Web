@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardwood Hero: Impact Edition</title>
+    <style>
+        :root { 
+            --neon-orange: #ff8c00; 
+            --neon-blue: #00d4ff; 
+            --neon-green: #39ff14; 
+            --neon-red: #ff3131;
+            --dark-bg: #0a0a0c; 
+        }
+
+        /* CAMERA SHAKE ANIMATION */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        .shake-it {
+            animation: shake 0.4s;
+            animation-iteration-count: 1;
+            border-color: var(--neon-red) !important;
+            box-shadow: 0 0 40px var(--neon-red) !important;
+        }
+
+        body { 
+            font-family: 'Arial Black', sans-serif; 
+            background: var(--dark-bg); 
+            color: #fff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            min-height: 100vh;
+            margin: 0; 
+        }
+
+        #game-container { 
+            background: #16161a; 
+            width: 90%; 
+            max-width: 450px; 
+            padding: 30px; 
+            border-radius: 25px; 
+            border: 4px solid var(--neon-orange); 
+            text-align: center; 
+            box-shadow: 0 0 25px rgba(255, 140, 0, 0.4);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .scoreboard { 
+            background: #000; 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 15px; 
+            margin-bottom: 25px; 
+            border-radius: 12px; 
+            color: var(--neon-green); 
+            font-family: 'Courier New', monospace; 
+            font-size: 1.4rem; 
+            border: 2px solid #333;
+        }
+
+        .category-btn { 
+            background: transparent; 
+            width: 100%; 
+            margin: 12px 0; 
+            padding: 18px; 
+            font-size: 1.1rem; 
+            border: 2px solid var(--neon-blue); 
+            color: var(--neon-blue); 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .category-btn:hover { 
+            background: var(--neon-blue); 
+            color: #000;
+            box-shadow: 0 0 25px var(--neon-blue);
+        }
+
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        
+        .option-btn { 
+            background: #222; 
+            color: #fff; 
+            border: 2px solid #444; 
+            padding: 18px; 
+            border-radius: 12px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 1.1rem; 
+            transition: transform 0.1s;
+        }
+
+        .btn-correct { 
+            background-color: var(--neon-green) !important; 
+            color: #000 !important;
+            box-shadow: 0 0 25px var(--neon-green);
+        }
+
+        .btn-wrong { 
+            background-color: var(--neon-red) !important; 
+            color: #fff !important;
+            box-shadow: 0 0 25px var(--neon-red);
+        }
+        
+        .hidden { display: none !important; }
+        input { padding: 15px; width: 80%; margin: 20px 0; border-radius: 10px; border: 2px solid var(--neon-blue); background: #000; color: #fff; text-align: center; }
+        #leaderboard-list { list-style: none; padding: 0; }
+        #leaderboard-list li { background: #1a1a1a; padding: 15px; margin: 10px 0; display: flex; justify-content: space-between; border-radius: 8px; border-right: 4px solid var(--neon-orange); }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="start-screen">
+        <h1>🏀 HARDWOOD HERO</h1>
+        <button class="category-btn" onclick="initGame('history')">📜 NBA Legends</button>
+        <button class="category-btn" onclick="initGame('modern')">🔥 2025-26 Season</button>
+        <button class="category-btn" onclick="initGame('college')">🎓 College Roots</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div class="scoreboard">
+            <div>PTS: <span id="ui-score">0</span></div>
+            <div>Q: <span id="ui-count">1</span>/5</div>
+        </div>
+        <h3 id="ui-question" style="min-height: 90px;"></h3>
+        <div class="options-grid" id="ui-options"></div>
+    </div>
+
+    <div id="game-over-screen" class="hidden">
+        <h2 id="end-header">FINAL BUZZER!</h2>
+        <p>Score: <strong id="ui-final-score" style="font-size: 3rem; color: var(--neon-green);">0</strong>/5</p>
+        <div id="save-section">
+            <input type="text" id="player-name" placeholder="YOUR INITIALS" maxlength="10">
+            <button onclick="handleSave()" style="width: 85%; background: var(--neon-orange); color: #000; font-size: 1.2rem; border-radius: 50px; cursor:pointer;">SUBMIT SCORE</button>
+        </div>
+        <ul id="leaderboard-list"></ul>
+        <button onclick="window.location.reload()" style="background:#333; width: 100%; margin-top: 15px; border-radius: 50px; color:white; padding:15px; cursor:pointer; border:none;">MAIN MENU</button>
+    </div>
+</div>
+
+<script>
+    // Note: Reusing the pool from before to keep it clean
+    const POOL = {
+        history: [
+            { q: "Who has 11 NBA rings as a player?", a: ["Bill Russell", "Kobe", "MJ", "Kareem"], c: 0 },
+            { q: "Who is 'The Answer'?", a: ["Iverson", "Shaq", "T-Mac", "KG"], c: 0 },
+            { q: "NBA/ABA merger year?", a: ["1970", "1976", "1980", "1984"], c: 1 },
+            { q: "Scored 100 points in 1962?", a: ["Wilt", "Kareem", "Oscar", "West"], c: 0 },
+            { q: "First unanimous MVP?", a: ["LeBron", "Curry", "MJ", "Shaq"], c: 1 }
+        ],
+        modern: [
+            { q: "Leading scorer in 2026?", a: ["LeBron", "Durant", "Curry", "Jokic"], c: 0 },
+            { q: "2025 #1 Draft Pick?", a: ["Cooper Flagg", "Ace Bailey", "Harper", "Edgecombe"], c: 0 },
+            { q: "2025 NBA MVP?", a: ["Luka Doncic", "Jokic", "SGA", "Tatum"], c: 0 },
+            { q: "Victor Wembanyama's team?", a: ["Spurs", "Rockets", "Thunder", "Magic"], c: 0 },
+            { q: "Joined Lakers in 2025?", a: ["Luka Doncic", "Trae Young", "Butler", "Donovan"], c: 0 }
+        ],
+        college: [
+            { q: "Curry's college?", a: ["Davidson", "Duke", "UNC", "Kansas"], c: 0 },
+            { q: "Jayson Tatum's college?", a: ["Duke", "Kentucky", "UCLA", "Syracuse"], c: 0 },
+            { q: "Ja Morant's college?", a: ["Murray State", "Gonzaga", "LSU", "Duke"], c: 0 },
+            { q: "MJ's college?", a: ["UNC", "NC State", "Duke", "Virginia"], c: 0 },
+            { q: "Anthony Edwards' college?", a: ["Georgia", "Auburn", "Bama", "Florida"], c: 0 }
+        ]
+    };
+
+    let sessionQs = [];
+    let cur = 0;
+    let pts = 0;
+    let canClick = true;
+
+    function initGame(cat) {
+        sessionQs = [...POOL[cat]].sort(() => Math.random() - 0.5).slice(0, 5);
+        cur = 0; pts = 0;
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        renderQ();
+    }
+
+    function renderQ() {
+        canClick = true;
+        const qData = sessionQs[cur];
+        document.getElementById('ui-count').innerText = cur + 1;
+        document.getElementById('ui-score').innerText = pts;
+        document.getElementById('ui-question').innerText = qData.q;
+        
+        const optBox = document.getElementById('ui-options');
+        optBox.innerHTML = '';
+
+        let buttons = qData.a.map((txt, i) => ({ txt, isCorrect: i === qData.c }));
+        buttons.sort(() => Math.random() - 0.5);
+
+        buttons.forEach(b => {
+            const el = document.createElement('button');
+            el.className = 'option-btn';
+            el.innerText = b.txt;
+            el.onclick = () => handleChoice(el, b.isCorrect);
+            optBox.appendChild(el);
+        });
+    }
+
+    function handleChoice(element, isCorrect) {
+        if (!canClick) return;
+        canClick = false;
+
+        const container = document.getElementById('game-container');
+
+        if (isCorrect) {
+            pts++;
+            element.classList.add('btn-correct');
+            element.innerText = "✅ " + element.innerText;
+        } else {
+            element.classList.add('btn-wrong');
+            element.innerText = "❌ " + element.innerText;
+            
+            // TRIGGER CAMERA SHAKE
+            container.classList.add('shake-it');
+            setTimeout(() => {
+                container.classList.remove('shake-it');
+            }, 400);
+        }
+
+        setTimeout(() => {
+            cur++;
+            if (cur < 5) renderQ(); else finish();
+        }, 1000);
+    }
+
+    function finish() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('game-over-screen').classList.remove('hidden');
+        document.getElementById('ui-final-score').innerText = pts;
+        loadLB();
+    }
+
+    function handleSave() {
+        const name = document.getElementById('player-name').value.toUpperCase() || "PLAYER";
+        let lb = JSON.parse(localStorage.getItem('impact_hoops_lb') || "[]");
+        lb.push({name, score: pts});
+        lb.sort((a,b) => b.score - a.score);
+        localStorage.setItem('impact_hoops_lb', JSON.stringify(lb.slice(0,5)));
+        document.getElementById('save-section').innerHTML = "<h3 style='color:var(--neon-green)'>REGISTERED</h3>";
+        loadLB();
+    }
+
+    function loadLB() {
+        const lb = JSON.parse(localStorage.getItem('impact_hoops_lb') || "[]");
+        document.getElementById('leaderboard-list').innerHTML = lb.map((entry, i) => 
+            `<li><span>#${i+1} ${entry.name}</span> <span>${entry.score}/5</span></li>`
+        ).join('');
+    }
+</script>
+</body>
+</html>
