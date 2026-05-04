@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michael Pereira | Forensic Accounting Portfolio</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --card-bg: #141414;
+            --primary-red: #e63946; 
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --border-color: #262626;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 1.2rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--primary-red);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-red);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 10%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            min-height: 50vh;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            margin: 0;
+            line-height: 1;
+            font-weight: 900;
+        }
+
+        .hero-text span {
+            color: var(--primary-red);
+        }
+
+        .profile-img {
+            width: 300px;
+            height: 300px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--primary-red);
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.15);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05) rotate(1deg);
+            box-shadow: 0 15px 45px rgba(230, 57, 70, 0.3);
+        }
+
+        /* Content Layout */
+        .container {
+            padding: 2rem 10% 4rem 10%;
+        }
+
+        .section-title {
+            color: var(--primary-red);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-red);
+        }
+
+        /* Experience Styles */
+        .exp-item { margin-bottom: 3rem; }
+        .exp-item:last-child { margin-bottom: 0; }
+        .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+        .job-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); }
+        .company-name { color: var(--primary-red); font-weight: 600; }
+        .exp-date { color: var(--text-dim); font-size: 0.9rem; }
+        .exp-list { margin: 1rem 0 0 0; padding-left: 1.2rem; color: var(--text-dim); }
+        .exp-list li { margin-bottom: 0.8rem; }
+
+        /* Roadmap/Education */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .roadmap-item {
+            padding-left: 20px;
+            border-left: 2px solid var(--primary-red);
+        }
+
+        .status-badge {
+            background: var(--primary-red);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* Project Card */
+        .project-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #141414 0%, #1a1a1a 100%);
+        }
+
+        .project-info h3 { margin: 0 0 0.5rem 0; font-size: 1.5rem; }
+
+        /* Contact Section */
+        .contact-section {
+            background: var(--card-bg);
+            padding: 5rem 10%;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            background: var(--primary-red);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            margin: 10px;
+            transition: var(--transition);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary-red);
+            color: var(--primary-red);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            background: #c62e3a;
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-red);
+            color: white;
+        }
+
+        @media (max-width: 900px) {
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 2rem; }
+            .roadmap-grid { grid-template-columns: 1fr; }
+            .hero-text h1 { font-size: 3rem; }
+            .exp-header { flex-direction: column; }
+            .project-card { flex-direction: column; text-align: center; gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">M.PEREIRA</a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#path">Education</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <header class="hero" id="about">
+        <div class="hero-text">
+            <h1>MICHAEL <br><span>PEREIRA</span></h1>
+            <p style="font-size: 1.4rem; color: var(--text-dim); margin: 1.5rem 0;">Aspiring Forensic Accountant</p>
+            <p style="max-width: 550px; color: var(--text-dim);">
+                Highly analytical professional pursuing a <strong>Bachelor's Degree in Accounting</strong> at Rutgers Business School. Committed to financial integrity with hands-on experience in budget administration and risk identification.
+            </p>
+            <div style="margin-top: 2rem;">
+                <a href="#contact" class="btn">Contact Me</a>
+                <a href="Michael Pereira Resume.docx" target="_blank" class="btn btn-outline">View Resume</a>
+            </div>
+        </div>
+        <img src="Assets/ProfilePic.jpeg" alt="Michael Pereira" class="profile-img">
+    </header>
+
+    <div class="container">
+        
+        <div id="experience">
+            <span class="section-title">Professional Experience</span>
+            <div class="card">
+                
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <div>
+                            <div class="job-title">Security Guard</div>
+                            <div class="company-name">Parabellum Security | Rutherford, NJ</div>
+                        </div>
+                        <div class="exp-date">March 2025 – Current</div>
+                    </div>
+                    <ul class="exp-list">
+                        <li>Monitor personnel and logistical vehicles entering MetLife Stadium to identify potential threats to public safety.</li>
+                        <li>Maintain constant communication during 10+ hour patrols to relay critical safety information.</li>
+                    </ul>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #222; margin: 2rem 0;">
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <div>
+                            <div class="job-title">Treasurer / Philanthropy</div>
+                            <div class="company-name">Phi Kappa Tau | New Brunswick, NJ</div>
+                        </div>
+                        <div class="exp-date">Sept 2023 – May 2027</div>
+                    </div>
+                    <ul class="exp-list">
+                        <li>Administer a $50k organizational budget and forecast future financial requirements.</li>
+                        <li>Organized philanthropy events that successfully raised over $2,000 for charitable causes.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="path" style="margin-top: 4rem;">
+            <span class="section-title">Academic Roadmap</span>
+            <div class="card">
+                <div class="roadmap-grid">
+                    <div class="roadmap-item">
+                        <strong style="font-size: 1.1rem;">Rutgers Business School</strong>
+                        <span class="status-badge">ACTIVE</span>
+                        <p style="color: var(--text-main); margin-bottom: 0;">B.S. in Accounting</p>
+                        <p style="color: var(--text-dim); margin-top: 0.2rem; font-size: 0.9rem;">
+                            Expected May 2027<br>
+                            Coursework: Financial & Managerial Accounting, AIS, Intermediate Accounting.
+                        </p>
+                    </div>
+                    <div class="roadmap-item" style="border-left-color: #333;">
+                        <strong style="font-size: 1.1rem;">CPA Licensure</strong>
+                        <span class="status-badge" style="background: #333;">FUTURE TARGET</span>
+                        <p style="color: var(--text-dim); margin-top: 0.5rem; font-size: 0.9rem;">
+                            The final milestone to specialize in professional auditing and forensic investigation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="projects" style="margin-top: 4rem;">
+            <span class="section-title">Software Projects</span>
+            <div class="card project-card">
+                <div class="project-info">
+                    <h3>🏀 Hardwood Hero</h3>
+                    <p style="color: var(--text-dim); max-width: 400px; margin-bottom: 0;">
+                        An interactive NBA trivia application built with JavaScript, featuring dynamic scoring and impact feedback.
+                    </p>
+                </div>
+                <a href="App.html" target="_blank" class="btn" style="background: #ff8c00; color: #000; box-shadow: none;">Launch App</a>
+            </div>
+        </div>
+
+    </div>
+
+    <section class="contact-section" id="contact">
+        <span class="section-title">Get In Touch</span>
+        <div style="margin: 2rem 0;">
+            <p style="font-size: 1.5rem; margin: 0; letter-spacing: 1px;">(908)-433-1940</p>
+            <p><a href="mailto:Mike.Pereira805@gmail.com" style="color: var(--text-dim); text-decoration: none;">Mike.Pereira805@gmail.com</a></p>
+        </div>
+        <a href="https://linkedin.com/in/michael-pereira-956123372" target="_blank" class="btn" style="background: #0077b5;">LinkedIn Profile</a>
+        <a href="mailto:Mike.Pereira805@gmail.com" class="btn">Send Email</a>
+    </section>
+
+    <footer style="padding: 3rem; text-align: center; color: #444; font-size: 0.75rem; letter-spacing: 1px;">
+        &copy; 2026 MICHAEL PEREIRA | PRECISION . INTEGRITY . INVESTIGATION
+    </footer>
+
+</body>
+</html>
